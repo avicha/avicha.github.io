@@ -1,8 +1,6 @@
 $(function() {
-    var w = window.innerHeight,
-        h = window.innerWidth,
-        pages = $('#pages'),
-        texts = ['亲爱的面面同学', '过去的阿狸一直是一个人生活，享受着孤独，也憧憬着爱情', '一个人上下班', '一个人去远行', '一个人搭地铁', '一个人入睡', '但他依然相信，会有那么一天，她会出现', '生活虽有些磕磕碰碰', '阿狸仍然微笑面对', '可是阿狸的爱情又在哪里呢', '直到那一天，2.6，阿狸遇见了面面', '阿狸的生活从此有了方向和目标', '阿狸每晚都和面面一起等公交车', '把面面安全送到家门口，阿狸才一个人回家', '然后高兴地进入梦乡，希望梦见面面', '他们一起玩耍', '他们一起煮菜', '面面还是要吃两个面', '他们一起买买买', '面面还说要带上阿狸一起去海滩', '阿狸也很努力，想给面面一个未来', '然而，他们突然吵架了', '是我做得不对，但我会因为面面变得更好的', '没有了面面在身边，风景变得没有色彩', '没有了面面在背后，阿狸又怎会飞得更高更远', '阿狸不能失去面面，于是儿童节准备了糖果，想哄回面面', '然而面面还是不理阿狸', '细水方可长流，为什么不给阿狸一个机会呢', '面面同学，我们一起重新修筑爱的城堡，好吗'];
+    var pages = $('#pages'),
+        texts = ['亲爱的面面同学', '过去的阿狸一直是一个人生活，享受着孤独，也憧憬着爱情', '一个人上下班', '一个人去远行', '一个人搭地铁', '一个人入睡', '但他依然相信，会有那么一天，她会出现', '生活虽有些磕磕碰碰', '阿狸仍然微笑面对', '可是阿狸的爱情又在哪里呢', '直到那一天，2.8，阿狸遇见了面面', '阿狸的生活从此有了方向和目标', '阿狸每晚都和面面一起等公交车', '把面面安全送到家门口，阿狸才一个人回家', '然后甜蜜地入睡，希望梦见面面', '他们一起玩耍', '他们一起煮菜', '面面还是要吃两个面', '他们一起买买买', '面面还说要带上阿狸一起去海滩', '阿狸也很努力，想给面面一个未来', '然而，他们突然吵架了', '是我做得不对，但我会因为面面变得更好的', '没有了面面在身边，风景变得没有色彩', '没有了面面在背后，阿狸又怎会飞得更高更远', '阿狸不能失去面面，于是儿童节准备了糖果，想哄回面面', '然而面面还是不理阿狸', '细水方可长流，为什么不给阿狸一个机会呢', '面面同学，我们一起重新修筑爱的城堡，好吗'];
     var next = function(t) {
         window.setTimeout(function() {
             pages.turn('next');
@@ -22,7 +20,7 @@ $(function() {
             }
         }
     };
-    var sum = $('[data-src]').length + 1,
+    var sum = $('[data-src]').length,
         loaded = 0,
         progress = $('#progress');
     async.waterfall([function(callback) {
@@ -39,16 +37,31 @@ $(function() {
             img.src = src;
         }, callback);
     }, function(callback) {
-        var bgSound = new Audio('./audio/saveme.mp3');
-        bgSound.loop = true;
-        bgSound.addEventListener('canplaythrough', function() {
-            loaded++;
-            progress.width(loaded * 100 / sum + '%');
-            callback(null, bgSound);
-        });
-    }], function(err, bgSound) {
-        bgSound.play();
-        // $('#loader').hide();
+        document.getElementById('bg-music').play();
+        $('#loader').hide();
+        window.addEventListener('resize', function(e) {
+            var w = $('body').width();
+            var h = $('body').height();
+            if (w > h) {
+                $('#pages').css({
+                    'transform': 'rotate(0deg)',
+                    '-webkit-transform': 'rotate(0deg)'
+                });
+            } else {
+                $('#pages').css({
+                    'transform': 'rotate(90deg)',
+                    '-webkit-transform': 'rotate(90deg)'
+                });
+            }
+        }, false);
+        callback(null);
+    }], function(err) {
+        var w = $('body').height();
+        var h = $('body').width();
+        if (w < h) {
+            w = $('body').width();
+            h = $('body').height();
+        }
         pages.turn({
             width: w,
             height: h,
@@ -93,21 +106,6 @@ $(function() {
             marginLeft: -w / 2,
             marginTop: -h / 2
         }).show();
-        window.addEventListener('resize', function(e) {
-            var w = $('body').width();
-            var h = $('body').height();
-            if (w > h) {
-                $('#pages').css({
-                    'transform': 'rotate(0deg)',
-                    '-webkit-transform': 'rotate(0deg)'
-                });
-            } else {
-                $('#pages').css({
-                    'transform': 'rotate(90deg)',
-                    '-webkit-transform': 'rotate(90deg)'
-                });
-            }
-        }, false);
         window.scrollTo(0, 0);
     });
 });
