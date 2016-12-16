@@ -7,7 +7,7 @@ window.addEventListener("DOMContentLoaded", function() {
             "video": true
         },
         errBack = function(error) {
-            window.alert("Video capture error: ", error.code);
+            window.alert("Video capture error: ", error.stack);
         };
 
 
