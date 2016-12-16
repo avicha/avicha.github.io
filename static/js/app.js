@@ -28,6 +28,6 @@ window.addEventListener("DOMContentLoaded", function() {
         context.drawImage(video, 0, 0, 330, 250);
     }, 1000)
 }, false);
-window.onerror(function(e){
+window.onerror = function(e) {
     alert(e.stack);
-})
+}
